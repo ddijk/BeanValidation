@@ -9,11 +9,12 @@ import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 
 public class Person
 {
 
-  @NotNull
+  @RestrictedLength(length = 4, groups = Default.class)
   String naam;
 
   @NotNull
@@ -44,7 +45,7 @@ public class Person
   public static void main(String[] args)
   {
     Person p = new Person();
-    p.setNaam("dick");
+    p.setNaam("dik");
     p.setAge(8);
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
