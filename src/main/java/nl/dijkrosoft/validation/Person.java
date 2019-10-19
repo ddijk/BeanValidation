@@ -2,6 +2,8 @@ package nl.dijkrosoft.validation;
 
 import nl.dijkrosoft.validation.constraints.NotEmptyFields;
 import nl.dijkrosoft.validation.groups.GroupOne;
+import nl.dijkrosoft.validation.groups.SubOfGroupOne;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ public class Person {
     @RestrictedLength(length = 4, groups = Default.class)
     String naam;
 
+    String alias;
+
+
     @NotNull
     @Min(value = 3)
     @Max(value = 5)
@@ -33,6 +38,13 @@ public class Person {
     public String getNaam() {
         return naam;
     }
+
+    @Length(min = 3, groups = SubOfGroupOne.class)
+    public String getAlias() {
+        return alias;
+    }
+
+
 
     public void setNaam(String naam) {
         this.naam = naam;
@@ -52,12 +64,14 @@ public class Person {
     }
 
 
-    @NotEmptyFields(groups = GroupOne.class)
+    @NotEmptyFields(groups = SubOfGroupOne.class)
     public List<String> getAliases() {
         return aliases;
     }
 
     public static void main(String[] args) {
+
+
         Person p = new Person();
         p.setNaam("dik");
         p.setAge(8);
@@ -69,6 +83,7 @@ public class Person {
         Validator validator = factory.getValidator();
 
         //   Set<ConstraintViolation<Person>> violations = validator.validateProperty(p, "naam");
+        p.alias="ne";
         Set<ConstraintViolation<Person>> violations = null;
         System.out.println("Validate using default group");
         violations = validator.validate(p);
